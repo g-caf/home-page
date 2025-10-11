@@ -1,0 +1,42 @@
+<%- include('../partials/head', { title: 'Admin - Book Posts' }) %>
+<body class="admin-page">
+    <%- include('../partials/header') %>
+
+    <main class="admin-content">
+        <div class="admin-header">
+            <h1>Book Posts Admin</h1>
+            <a href="/admin/books/new" class="btn-create">Create New Post</a>
+        </div>
+
+        <div class="admin-feed">
+            <% if (bookPosts.length === 0) { %>
+                <p class="no-posts">No book posts yet. Create your first post!</p>
+            <% } else { %>
+                <% bookPosts.forEach(post => { %>
+                    <div class="admin-book-card" data-id="<%= post.id %>">
+                        <div class="admin-card-content">
+                            <% if (post.image_url) { %>
+                                <img src="<%= post.image_url %>" alt="<%= post.title %>" class="admin-card-image">
+                            <% } %>
+                            <div class="admin-card-text">
+                                <h3><%= post.title %></h3>
+                                <% if (post.subtitle) { %>
+                                    <p class="admin-subtitle"><%= post.subtitle %></p>
+                                <% } %>
+                                <p class="admin-date"><%= new Date(post.published_date).toLocaleDateString() %></p>
+                            </div>
+                        </div>
+                        <div class="admin-card-actions">
+                            <a href="/admin/books/<%= post.id %>/edit" class="btn-edit">Edit</a>
+                            <form action="/admin/books/<%= post.id %>/delete" method="POST" style="display: inline;">
+                                <button type="submit" class="btn-delete" onclick="return confirm('Are you sure you want to delete this post?')">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } %>
+        </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>

@@ -1,0 +1,26 @@
+<% if (bookPosts.length === 0) { %>
+    <div class="no-articles-tile">
+        <div class="no-articles-content">
+            <h3>No book posts found</h3>
+        </div>
+    </div>
+<% } else { %>
+    <% bookPosts.forEach(post => { %>
+        <article class="article-card <%= post.image_url ? 'has-image' : 'no-image' %>"
+                 <% if (post.image_url) { %>
+                 style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.85)), url('<%= post.image_url %>');"
+                 <% } %>>
+            <a href="<%= post.url %>" target="_blank" class="article-link">
+                <div class="article-content">
+                    <h2 class="article-title"><%= post.title %></h2>
+                    <div class="article-meta">
+                        <span class="publication-name"><%= post.publication_name || 'Book Blog' %></span>
+                        <% if (post.published_date) { %>
+                        <span class="publish-date"> • <%= new Date(post.published_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></span>
+                        <% } %>
+                    </div>
+                </div>
+            </a>
+        </article>
+    <% }) %>
+<% } %>

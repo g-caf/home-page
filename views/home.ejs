@@ -1,0 +1,27 @@
+<%- include('partials/head', { title: 'Home' }) %>
+<body class="home-page">
+    <%- include('partials/header') %>
+
+    <div class="section-bar">
+        <h2>WHAT'S HAPPENING</h2>
+        <h2>WHAT I'M READING AND WRITING</h2>
+    </div>
+
+    <main class="main-content">
+        <div class="feeds-container">
+            <div class="feed">
+                <h2>News</h2>
+                <div class="articles-grid" id="articles-grid">
+                    <%- include('partials/articles-grid', { articles }) %>
+                </div>
+            </div>
+            <div class="feed">
+                <h2>Books</h2>
+                <div class="articles-grid" id="book-posts-grid">
+                    <%- include('partials/book-posts-grid', { bookPosts }) %>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <%- include('partials/footer') %>
