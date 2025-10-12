@@ -18,6 +18,7 @@ const newsFeeds = [
   'https://www.theatlantic.com/feed/all/',
   'https://www.newyorker.com/feed/everything',
   'http://feeds.feedburner.com/nymag/intelligencer',
+  'https://www.aljazeera.com/xml/rss/all.xml',
   // Culture
   'http://feeds.feedburner.com/nymag/fashion'
 ];
