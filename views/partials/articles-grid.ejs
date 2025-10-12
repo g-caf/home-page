@@ -9,7 +9,7 @@
     <% articles.forEach(article => { %>
         <article class="article-card <%= article.image_url ? 'has-image' : 'no-image' %>"
                  <% if (article.image_url) { %>
-                 style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.85)), url('<%= article.image_url %>');"
+                 style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.85)), url('<%= article.image_url %>') !important;"
                  <% } %>
                  data-article-id="<%= article.id %>">
             <a href="<%= article.url %>" target="_blank" class="article-link">
