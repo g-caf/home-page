@@ -95,10 +95,17 @@ body {
 }
 
 .article-card.has-image {
-    background-color: #000 !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
+    background-color: #000;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+}
+
+/* Force background to show through children */
+.article-card.has-image > * {
+    background: transparent !important;
 }
 
 .article-card.no-image {
@@ -119,6 +126,11 @@ body {
     flex-direction: column;
     justify-content: flex-end;
     position: relative;
+    pointer-events: none;
+}
+
+.article-link * {
+    pointer-events: auto;
 }
 
 .article-content {
