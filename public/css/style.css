@@ -95,10 +95,10 @@ body {
 }
 
 .article-card.has-image {
-    background-color: #000;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: #000 !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
 }
 
 .article-card.no-image {
@@ -118,9 +118,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: relative;
 }
 
 .article-content {
