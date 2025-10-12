@@ -45,8 +45,16 @@ router.get('/', async (req, res, next) => {
       try {
         const feed = await parser.parseURL(url);
 
-        // Extract publication name from feed
-        const publicationName = feed.title || feed.link || 'Unknown';
+        // Extract publication name from feed and clean it up
+        let publicationName = feed.title || feed.link || 'Unknown';
+
+        // Clean up feed titles like "NYT > Top Stories" to just "NYT"
+        if (publicationName.includes('>')) {
+          publicationName = publicationName.split('>')[0].trim();
+        }
+        if (publicationName.includes('-')) {
+          publicationName = publicationName.split('-')[0].trim();
+        }
 
 
         articles.push(...feed.items.map(item => ({
