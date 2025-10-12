@@ -262,16 +262,11 @@ body {
 
 .admin-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 30px;
     padding-bottom: 20px;
     border-bottom: 2px solid #eee;
-}
-
-.admin-header h1 {
-    margin: 0;
-    font-size: 2rem;
 }
 
 .btn-create {

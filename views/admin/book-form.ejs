@@ -5,14 +5,14 @@
     <main class="admin-content">
         <div class="form-header">
             <h1><%= bookPost ? 'Edit Book Post' : 'Create New Book Post' %></h1>
-            <a href="/admin/books" class="btn-back">Back to Admin</a>
+            <a href="/admin" class="btn-back">Back to Admin</a>
         </div>
 
         <% if (error) { %>
             <div class="error-message"><%= error %></div>
         <% } %>
 
-        <form action="<%= bookPost ? `/admin/books/${bookPost.id}` : '/admin/books' %>" method="POST" enctype="multipart/form-data" class="book-form">
+        <form action="<%= bookPost ? `/admin/${bookPost.id}` : '/admin' %>" method="POST" enctype="multipart/form-data" class="book-form">
             <div class="form-group">
                 <label for="title">Title *</label>
                 <input type="text" id="title" name="title" required value="<%= bookPost ? bookPost.title : '' %>">
@@ -47,7 +47,7 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn-submit"><%= bookPost ? 'Update Post' : 'Create Post' %></button>
-                <a href="/admin/books" class="btn-cancel">Cancel</a>
+                <a href="/admin" class="btn-cancel">Cancel</a>
             </div>
         </form>
     </main>

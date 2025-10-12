@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Admin page - list all book posts
-router.get('/books', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const bookPosts = await BookPost.findAll();
     res.render('admin/books', { bookPosts });
@@ -17,12 +17,12 @@ router.get('/books', async (req, res) => {
 });
 
 // Create book post form
-router.get('/books/new', (req, res) => {
+router.get('/new', (req, res) => {
   res.render('admin/book-form', { bookPost: null, error: null });
 });
 
 // Create book post
-router.post('/books', upload.single('image'), async (req, res) => {
+router.post('/', upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, published_date, content } = req.body;
 
@@ -41,7 +41,7 @@ router.post('/books', upload.single('image'), async (req, res) => {
       published_date
     });
 
-    res.redirect('/admin/books');
+    res.redirect('/admin');
   } catch (error) {
     console.error('Error creating book post:', error);
     res.render('admin/book-form', {
@@ -52,7 +52,7 @@ router.post('/books', upload.single('image'), async (req, res) => {
 });
 
 // Edit book post form
-router.get('/books/:id/edit', async (req, res) => {
+router.get('/:id/edit', async (req, res) => {
   try {
     const bookPost = await BookPost.findById(req.params.id);
     if (!bookPost) {
@@ -66,7 +66,7 @@ router.get('/books/:id/edit', async (req, res) => {
 });
 
 // Update book post
-router.post('/books/:id', upload.single('image'), async (req, res) => {
+router.post('/:id', upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, published_date, content } = req.body;
     const bookPost = await BookPost.findById(req.params.id);
@@ -100,7 +100,7 @@ router.post('/books/:id', upload.single('image'), async (req, res) => {
       published_date
     });
 
-    res.redirect('/admin/books');
+    res.redirect('/admin');
   } catch (error) {
     console.error('Error updating book post:', error);
     const bookPost = await BookPost.findById(req.params.id);
@@ -112,7 +112,7 @@ router.post('/books/:id', upload.single('image'), async (req, res) => {
 });
 
 // Delete book post
-router.post('/books/:id/delete', async (req, res) => {
+router.post('/:id/delete', async (req, res) => {
   try {
     const bookPost = await BookPost.findById(req.params.id);
 
@@ -129,7 +129,7 @@ router.post('/books/:id/delete', async (req, res) => {
     }
 
     await BookPost.delete(req.params.id);
-    res.redirect('/admin/books');
+    res.redirect('/admin');
   } catch (error) {
     console.error('Error deleting book post:', error);
     res.status(500).send('Error deleting post');
