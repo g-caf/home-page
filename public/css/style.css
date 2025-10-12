@@ -71,7 +71,7 @@ body {
     padding: 0;
 }
 
-.feed h2 {
+.feed > h2 {
     display: none; /* Headers now in fixed section-bar */
 }
 
