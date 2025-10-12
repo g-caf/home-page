@@ -1,5 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
     const text = document.querySelector('.circling-text');
+
+    // Only run if the element exists on the page
+    if (!text) return;
+
     const textContent = text.textContent.trim();
     text.textContent = '';
 
