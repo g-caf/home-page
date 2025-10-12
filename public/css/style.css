@@ -119,6 +119,7 @@ body {
     flex-direction: column;
     justify-content: flex-end;
     position: relative;
+    background: transparent;
 }
 
 .article-content {
