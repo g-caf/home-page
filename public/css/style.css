@@ -118,8 +118,9 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    position: relative;
-    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .article-content {
