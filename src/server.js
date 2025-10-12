@@ -13,16 +13,6 @@ const logger = require('./utils/logger');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Initialize database
-(async () => {
-  try {
-    await runMigrations();
-  } catch (error) {
-    logger.error('Failed to run migrations:', error);
-    process.exit(1);
-  }
-})();
-
 // Configure EJS template engine
 app.set('views', path.join(__dirname, '..', 'views'));
 app.set('view engine', 'ejs');
@@ -57,13 +47,20 @@ app.use((err, req, res, next) => {
   res.status(500).send('Server Error');
 });
 
-// Start server
-try {
-  app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
-  });
-} catch (error) {
-  console.error('Failed to start server:', error);
-}
+// Start server with database initialization
+(async () => {
+  try {
+    // Initialize database first
+    await runMigrations();
+
+    // Then start the server
+    app.listen(PORT, '0.0.0.0', () => {
+      logger.info(`Server started on port ${PORT}`);
+    });
+  } catch (error) {
+    logger.error('Failed to start server:', error);
+    process.exit(1);
+  }
+})();
 
 module.exports = app;
