@@ -52,7 +52,7 @@ router.post('/', upload.single('image'), async (req, res) => {
 });
 
 // Edit book post form
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id(\\d+)/edit', async (req, res) => {
   try {
     const bookPost = await BookPost.findById(req.params.id);
     if (!bookPost) {
@@ -66,7 +66,7 @@ router.get('/:id/edit', async (req, res) => {
 });
 
 // Update book post
-router.post('/:id', upload.single('image'), async (req, res) => {
+router.post('/:id(\\d+)', upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, published_date, content } = req.body;
     const bookPost = await BookPost.findById(req.params.id);
@@ -112,7 +112,7 @@ router.post('/:id', upload.single('image'), async (req, res) => {
 });
 
 // Delete book post
-router.post('/:id/delete', async (req, res) => {
+router.post('/:id(\\d+)/delete', async (req, res) => {
   try {
     const bookPost = await BookPost.findById(req.params.id);
 
