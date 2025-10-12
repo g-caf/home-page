@@ -10,13 +10,15 @@
                  <% if (post.image_url) { %>
                  style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.85)), url('<%= post.image_url %>');"
                  <% } %>>
-            <a href="<%= post.url %>" target="_blank" class="article-link">
+            <a href="<%= post.url %>" class="article-link">
                 <div class="article-content">
                     <h2 class="article-title"><%= post.title %></h2>
+                    <% if (post.subtitle) { %>
+                    <p class="article-subtitle"><%= post.subtitle %></p>
+                    <% } %>
                     <div class="article-meta">
-                        <span class="publication-name"><%= post.publication_name || 'Book Blog' %></span>
                         <% if (post.published_date) { %>
-                        <span class="publish-date"> • <%= new Date(post.published_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></span>
+                        <span class="publish-date"><%= new Date(post.published_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></span>
                         <% } %>
                     </div>
                 </div>

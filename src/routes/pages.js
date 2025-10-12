@@ -116,7 +116,8 @@ router.get('/', async (req, res, next) => {
 
         return {
           title: item.title,
-          publication_name: item.feedTitle || item.creator || 'Unknown',
+          author: item.creator || item.author,
+          publication_name: item.feedTitle || 'Unknown',
           published_date: item.pubDate,
           url: item.link,
           image_url: imageUrl

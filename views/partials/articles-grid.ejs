@@ -16,6 +16,10 @@
                 <div class="article-content">
                     <h2 class="article-title"><%= article.title %></h2>
                     <div class="article-meta">
+                        <% if (article.author) { %>
+                        <span class="article-author"><%= article.author %></span>
+                        <span class="meta-separator"> • </span>
+                        <% } %>
                         <span class="publication-name"><%= article.publication_name || 'Unknown' %></span>
                         <% if (article.published_date) { %>
                         <span class="publish-date"> • <%= new Date(article.published_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) %></span>
