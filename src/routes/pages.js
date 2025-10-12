@@ -1,7 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const Parser = require('rss-parser');
-const parser = new Parser();
+const parser = new Parser({
+  customFields: {
+    item: [
+      ['media:content', 'media:content', { keepArray: true }],
+      ['media:thumbnail', 'media:thumbnail', { keepArray: true }],
+      ['media:group', 'media:group', { keepArray: true }],
+      ['content:encoded', 'content:encoded']
+    ]
+  }
+});
 const BookPost = require('../models/BookPost');
 
 // RSS feeds - from News - Main project
@@ -76,47 +85,63 @@ router.get('/', async (req, res, next) => {
 
         // Try multiple image extraction methods
         // 1. Enclosure (common in RSS)
-        if (item.enclosure && item.enclosure.url) {
-          imageUrl = item.enclosure.url;
+        const enclosure = item.enclosure;
+        if (enclosure) {
+          const enclSources = Array.isArray(enclosure) ? enclosure : [enclosure];
+          const match = enclSources.find(src => src && src.url);
+          if (match && match.url) {
+            imageUrl = match.url;
+          }
         }
         // 2. Media content (RSS extensions)
-        else if (item['media:content']) {
+        if (!imageUrl && item['media:content']) {
           const mc = item['media:content'];
-          if (Array.isArray(mc)) {
-            const img = mc.find(m => (m.$ && m.$.url) || m.url);
-            if (img) {
-              imageUrl = img.$.url || img.url;
+          const mediaItems = Array.isArray(mc) ? mc : [mc];
+          const img = mediaItems.find(m => (m && m.$ && m.$.url) || (m && m.url));
+          if (img) {
+            imageUrl = (img.$ && img.$.url) || img.url || null;
+          }
+        }
+        // 3. Media group (NYTimes and others)
+        if (!imageUrl && item['media:group']) {
+          const mg = item['media:group'];
+          const groups = Array.isArray(mg) ? mg : [mg];
+          for (const group of groups) {
+            const contents = group['media:content'];
+            if (contents) {
+              const mediaItems = Array.isArray(contents) ? contents : [contents];
+              const img = mediaItems.find(m => (m && m.$ && m.$.url) || (m && m.url));
+              if (img) {
+                imageUrl = (img.$ && img.$.url) || img.url || null;
+                break;
+              }
             }
-          } else if (mc.$ && mc.$.url) {
-            imageUrl = mc.$.url;
-          } else if (mc.url) {
-            imageUrl = mc.url;
           }
         }
-        // 3. Media thumbnail
-        else if (item['media:thumbnail']) {
+        // 4. Media thumbnail
+        if (!imageUrl && item['media:thumbnail']) {
           const mt = item['media:thumbnail'];
-          if (mt.$ && mt.$.url) {
-            imageUrl = mt.$.url;
-          } else if (mt.url) {
-            imageUrl = mt.url;
+          const thumbnails = Array.isArray(mt) ? mt : [mt];
+          const thumb = thumbnails.find(t => (t && t.$ && t.$.url) || (t && t.url));
+          if (thumb) {
+            imageUrl = (thumb.$ && thumb.$.url) || thumb.url || null;
           }
         }
-        // 4. Content encoded
-        else if (item['content:encoded']) {
+        // 5. Content encoded
+        if (!imageUrl && item['content:encoded']) {
           const imgMatch = item['content:encoded'].match(/<img[^>]+src=["']([^"'>]+)["']/i);
           if (imgMatch) {
             imageUrl = imgMatch[1];
           }
         }
-        // 5. Extract from content/description
-        else if (item.content) {
+        // 6. Extract from content/description
+        if (!imageUrl && item.content) {
           const imgMatch = item.content.match(/<img[^>]+src=["']([^"'>]+)["']/i);
           if (imgMatch) {
             imageUrl = imgMatch[1];
           }
         }
-        else if (item.description) {
+        if (!imageUrl && item.description) {
           const imgMatch = item.description.match(/<img[^>]+src=["']([^"'>]+)["']/i);
           if (imgMatch) {
             imageUrl = imgMatch[1];
@@ -140,4 +165,3 @@ router.get('/', async (req, res, next) => {
 });
 
 module.exports = router;
-
