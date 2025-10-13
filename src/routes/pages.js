@@ -164,4 +164,19 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+// About page
+router.get('/about', (req, res) => {
+  res.render('about', { title: "Who's Writing This?" });
+});
+
+// Contact page
+router.get('/contact', (req, res) => {
+  res.render('contact', { title: 'Can I Email Her?' });
+});
+
+// Reading page
+router.get('/reading', (req, res) => {
+  res.render('reading', { title: "What Else Is She Reading?" });
+});
+
 module.exports = router;

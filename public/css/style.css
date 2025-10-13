@@ -96,16 +96,6 @@ body {
 
 .article-card.has-image {
     background-color: #000;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transform: translate3d(0, 0, 0);
-    will-change: transform;
-}
-
-/* Force background to show through children */
-.article-card.has-image > * {
-    background: transparent !important;
 }
 
 .article-card.no-image {
@@ -280,14 +270,20 @@ body {
     right: 0;
     background: white;
     padding: 20px;
-    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     border-top: 1px solid #eee;
 }
 
 .bottom-nav a {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 700;
     text-decoration: none;
-    color: #333;
-    margin: 0 15px;
+    color: #000;
+    flex: 1;
+    text-align: center;
 }
 
 /* Admin Page Styles */
@@ -618,3 +614,4 @@ body {
     color: #333;
     white-space: pre-wrap;
 }
+/* Cache bust: 1760245122 */
