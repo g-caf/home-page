@@ -165,6 +165,9 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+const MarkdownIt = require('markdown-it');
+const md = new MarkdownIt();
+
 // About page
 router.get('/about', async (req, res) => {
   try {
@@ -172,6 +175,12 @@ router.get('/about', async (req, res) => {
     if (!page) {
       return res.render('about', { title: "Who's Writing This?", page: null });
     }
+
+    // Render markdown content to HTML
+    if (page.content) {
+      page.contentHtml = md.render(page.content);
+    }
+
     res.render('page', { title: page.title, page });
   } catch (error) {
     console.error('Error fetching about page:', error);
@@ -186,6 +195,12 @@ router.get('/contact', async (req, res) => {
     if (!page) {
       return res.render('contact', { title: 'Can I Email Her?', page: null });
     }
+
+    // Render markdown content to HTML
+    if (page.content) {
+      page.contentHtml = md.render(page.content);
+    }
+
     res.render('page', { title: page.title, page });
   } catch (error) {
     console.error('Error fetching contact page:', error);
@@ -200,6 +215,12 @@ router.get('/reading', async (req, res) => {
     if (!page) {
       return res.render('reading', { title: "What Else Is She Reading?", page: null });
     }
+
+    // Render markdown content to HTML
+    if (page.content) {
+      page.contentHtml = md.render(page.content);
+    }
+
     res.render('page', { title: page.title, page });
   } catch (error) {
     console.error('Error fetching reading page:', error);

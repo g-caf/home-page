@@ -17,15 +17,9 @@
                 <% } %>
             </div>
 
-            <% if (page.content) { %>
+            <% if (page.contentHtml) { %>
                 <div class="book-post-body">
-                    <%
-                    // Render markdown if available
-                    const MarkdownIt = require('markdown-it');
-                    const md = new MarkdownIt();
-                    const contentHtml = md.render(page.content);
-                    %>
-                    <%- contentHtml %>
+                    <%- page.contentHtml %>
                 </div>
             <% } %>
         </article>
