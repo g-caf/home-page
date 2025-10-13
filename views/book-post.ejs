@@ -18,9 +18,9 @@
                 <p class="book-post-date"><%= new Date(bookPost.published_date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
             </div>
 
-            <% if (bookPost.content) { %>
+            <% if (bookPost.contentHtml) { %>
                 <div class="book-post-body">
-                    <%= bookPost.content %>
+                    <%- bookPost.contentHtml %>
                 </div>
             <% } %>
         </article>

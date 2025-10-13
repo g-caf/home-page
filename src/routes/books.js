@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const BookPost = require('../models/BookPost');
+const MarkdownIt = require('markdown-it');
+const md = new MarkdownIt();
 
 // Individual book post page
 router.get('/:slug', async (req, res) => {
@@ -9,6 +11,11 @@ router.get('/:slug', async (req, res) => {
 
     if (!bookPost) {
       return res.status(404).send('Book post not found');
+    }
+
+    // Render markdown content to HTML
+    if (bookPost.content) {
+      bookPost.contentHtml = md.render(bookPost.content);
     }
 
     res.render('book-post', { bookPost });
