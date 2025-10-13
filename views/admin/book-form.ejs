@@ -25,7 +25,7 @@
 
             <div class="form-group">
                 <label for="published_date">Published Date *</label>
-                <input type="date" id="published_date" name="published_date" required value="<%= bookPost ? bookPost.published_date.split('T')[0] : '' %>">
+                <input type="date" id="published_date" name="published_date" required value="<%= bookPost ? (bookPost.published_date instanceof Date ? bookPost.published_date.toISOString().split('T')[0] : bookPost.published_date.split('T')[0]) : '' %>">
             </div>
 
             <div class="form-group">
