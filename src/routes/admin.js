@@ -81,6 +81,8 @@ router.get('/:id(\\d+)/edit', async (req, res) => {
 router.post('/:id(\\d+)', upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, published_date, content, type } = req.body;
+    console.log('Update request body:', { title, subtitle, published_date, contentLength: content ? content.length : 0, type });
+
     const bookPost = await BookPost.findById(req.params.id);
 
     if (!bookPost) {
