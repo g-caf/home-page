@@ -172,6 +172,13 @@ const md = new MarkdownIt();
 router.get('/about', async (req, res) => {
   try {
     const page = await BookPost.findBySlug('about');
+    console.log('About page data:', {
+      found: !!page,
+      hasContent: !!(page && page.content),
+      contentLength: page && page.content ? page.content.length : 0,
+      content: page && page.content
+    });
+
     if (!page) {
       return res.render('about', { title: "Who's Writing This?", page: null });
     }
@@ -179,6 +186,7 @@ router.get('/about', async (req, res) => {
     // Render markdown content to HTML
     if (page.content) {
       page.contentHtml = md.render(page.content);
+      console.log('Rendered HTML length:', page.contentHtml.length);
     }
 
     res.render('page', { title: page.title, page });
