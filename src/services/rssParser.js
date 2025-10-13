@@ -124,6 +124,7 @@ class RSSParserService {
   }
 
   async extractArticleData(item, publicationId) {
+    logger.info(JSON.stringify(item));
     // Prefer feedburner:origLink (canonical) then normalize
     const rawUrl = item['feedburner:origLink'] ||
                    (typeof item.link === 'string' ? item.link : item.link?.href) ||

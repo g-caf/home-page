@@ -6,10 +6,7 @@
     </div>
 <% } else { %>
     <% bookPosts.forEach(post => { %>
-        <article class="article-card <%= post.image_url ? 'has-image' : 'no-image' %>"
-                 <% if (post.image_url) { %>
-                 style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.85)), url('<%= post.image_url %>') !important;"
-                 <% } %>>
+        <article class="article-card <%= post.image_url ? 'has-image' : 'no-image' %>" <% if (post.image_url) { %>style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.85)), url('<%= post.image_url %>') !important;"<% } %>>
             <a href="<%= post.url %>" class="article-link">
                 <div class="article-content">
                     <h2 class="article-title"><%= post.title %></h2>

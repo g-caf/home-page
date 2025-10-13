@@ -180,7 +180,7 @@ router.get('/about', async (req, res) => {
     });
 
     if (!page) {
-      return res.render('about', { title: "Who's Writing This?", page: null });
+      return res.status(404).send('Page not found - please create it in the admin dashboard');
     }
 
     // Render markdown content to HTML
@@ -201,7 +201,7 @@ router.get('/contact', async (req, res) => {
   try {
     const page = await BookPost.findBySlug('contact');
     if (!page) {
-      return res.render('contact', { title: 'Can I Email Her?', page: null });
+      return res.status(404).send('Page not found - please create it in the admin dashboard');
     }
 
     // Render markdown content to HTML
@@ -221,7 +221,7 @@ router.get('/reading', async (req, res) => {
   try {
     const page = await BookPost.findBySlug('reading');
     if (!page) {
-      return res.render('reading', { title: "What Else Is She Reading?", page: null });
+      return res.status(404).send('Page not found - please create it in the admin dashboard');
     }
 
     // Render markdown content to HTML
