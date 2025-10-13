@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const BookPost = require('../models/BookPost');
 const upload = require('../config/upload');
+const cloudinary = require('../config/cloudinary');
 const fs = require('fs');
 const path = require('path');
 
@@ -29,8 +30,18 @@ router.post('/', upload.single('image'), async (req, res) => {
     // Generate slug from title
     const slug = BookPost.generateSlug(title);
 
-    // Get image URL if uploaded
-    const image_url = req.file ? `/uploads/books/${req.file.filename}` : null;
+    // Upload image to Cloudinary if provided
+    let image_url = null;
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'book-covers',
+        resource_type: 'image'
+      });
+      image_url = result.secure_url;
+
+      // Delete local temp file
+      fs.unlinkSync(req.file.path);
+    }
 
     await BookPost.create({
       title,
@@ -81,14 +92,25 @@ router.post('/:id(\\d+)', upload.single('image'), async (req, res) => {
     // Handle image upload
     let image_url = bookPost.image_url;
     if (req.file) {
-      // Delete old image if exists
-      if (bookPost.image_url) {
-        const oldImagePath = path.join(__dirname, '../../public', bookPost.image_url);
-        if (fs.existsSync(oldImagePath)) {
-          fs.unlinkSync(oldImagePath);
+      // Delete old image from Cloudinary if exists
+      if (bookPost.image_url && bookPost.image_url.includes('cloudinary.com')) {
+        const publicId = bookPost.image_url.split('/').slice(-2).join('/').split('.')[0];
+        try {
+          await cloudinary.uploader.destroy(publicId);
+        } catch (err) {
+          console.error('Error deleting old image from Cloudinary:', err);
         }
       }
-      image_url = `/uploads/books/${req.file.filename}`;
+
+      // Upload new image to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: 'book-covers',
+        resource_type: 'image'
+      });
+      image_url = result.secure_url;
+
+      // Delete local temp file
+      fs.unlinkSync(req.file.path);
     }
 
     await BookPost.update(req.params.id, {
@@ -120,11 +142,13 @@ router.post('/:id(\\d+)/delete', async (req, res) => {
       return res.status(404).send('Book post not found');
     }
 
-    // Delete associated image if exists
-    if (bookPost.image_url) {
-      const imagePath = path.join(__dirname, '../../public', bookPost.image_url);
-      if (fs.existsSync(imagePath)) {
-        fs.unlinkSync(imagePath);
+    // Delete associated image from Cloudinary if exists
+    if (bookPost.image_url && bookPost.image_url.includes('cloudinary.com')) {
+      const publicId = bookPost.image_url.split('/').slice(-2).join('/').split('.')[0];
+      try {
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.error('Error deleting image from Cloudinary:', err);
       }
     }
 

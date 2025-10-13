@@ -70,6 +70,11 @@ DB_NAME=rss_aggregator
 DB_USER=username
 DB_PASSWORD=password
 
+# Cloudinary Configuration (for image uploads)
+CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_API_KEY=your-api-key
+CLOUDINARY_API_SECRET=your-api-secret
+
 # Security
 JWT_SECRET=your-super-secret-jwt-key
 BCRYPT_ROUNDS=10
@@ -181,6 +186,9 @@ LOG_LEVEL=info
    ```env
    NODE_ENV=production
    DATABASE_URL=<your-postgresql-url>
+   CLOUDINARY_CLOUD_NAME=<your-cloudinary-cloud-name>
+   CLOUDINARY_API_KEY=<your-cloudinary-api-key>
+   CLOUDINARY_API_SECRET=<your-cloudinary-api-secret>
    JWT_SECRET=<your-secret-key>
    BCRYPT_ROUNDS=12
    RSS_UPDATE_INTERVAL=30
