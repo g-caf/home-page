@@ -37,11 +37,12 @@ const newsFeeds = [
 // Home page
 router.get('/', async (req, res, next) => {
   try {
-    // Fetch book posts from database
+    // Fetch book posts from database (exclude pages)
     const bookPostsFromDb = await BookPost.findAll();
+    const bookPostsOnly = bookPostsFromDb.filter(post => post.type !== 'page');
 
     // Transform book posts to match the article format
-    const bookPosts = bookPostsFromDb.map(post => ({
+    const bookPosts = bookPostsOnly.map(post => ({
       title: post.title,
       subtitle: post.subtitle,
       publication_name: 'My Book Blog',
