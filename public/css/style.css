@@ -57,18 +57,27 @@ body {
     flex: 1;
     margin-top: 163px; /* Adjust based on header + section bar height */
     margin-bottom: 60px; /* Adjust based on footer height */
+    overflow: hidden; /* Prevent page-level scrolling */
+    height: calc(100vh - 163px - 60px); /* Full height minus header and footer */
 }
 
 .feeds-container {
     display: flex;
     flex: 1;
     gap: 0;
+    height: 100%; /* Ensure full height for scrolling */
 }
 
 .feed {
     flex: 1;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 0;
+    height: 100%; /* Enable independent scrolling */
+}
+
+.feed:first-child {
+    border-right: 1px solid #e0e0e0; /* Visual separation between feeds */
 }
 
 .feed > h2 {
