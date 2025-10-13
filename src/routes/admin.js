@@ -25,7 +25,7 @@ router.get('/new', (req, res) => {
 // Create book post
 router.post('/', upload.single('image'), async (req, res) => {
   try {
-    const { title, subtitle, published_date, content } = req.body;
+    const { title, subtitle, published_date, content, type } = req.body;
 
     // Generate slug from title
     const slug = BookPost.generateSlug(title);
@@ -49,7 +49,8 @@ router.post('/', upload.single('image'), async (req, res) => {
       slug,
       content: content || null,
       image_url,
-      published_date
+      published_date,
+      type: type || 'book'
     });
 
     res.redirect('/admin');
@@ -79,7 +80,7 @@ router.get('/:id(\\d+)/edit', async (req, res) => {
 // Update book post
 router.post('/:id(\\d+)', upload.single('image'), async (req, res) => {
   try {
-    const { title, subtitle, published_date, content } = req.body;
+    const { title, subtitle, published_date, content, type } = req.body;
     const bookPost = await BookPost.findById(req.params.id);
 
     if (!bookPost) {
@@ -119,7 +120,8 @@ router.post('/:id(\\d+)', upload.single('image'), async (req, res) => {
       slug,
       content: content || null,
       image_url,
-      published_date
+      published_date,
+      type: type || bookPost.type || 'book'
     });
 
     res.redirect('/admin');

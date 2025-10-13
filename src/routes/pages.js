@@ -165,18 +165,45 @@ router.get('/', async (req, res, next) => {
 });
 
 // About page
-router.get('/about', (req, res) => {
-  res.render('about', { title: "Who's Writing This?" });
+router.get('/about', async (req, res) => {
+  try {
+    const page = await BookPost.findBySlug('about');
+    if (!page) {
+      return res.render('about', { title: "Who's Writing This?", page: null });
+    }
+    res.render('page', { title: page.title, page });
+  } catch (error) {
+    console.error('Error fetching about page:', error);
+    res.status(500).send('Error loading page');
+  }
 });
 
 // Contact page
-router.get('/contact', (req, res) => {
-  res.render('contact', { title: 'Can I Email Her?' });
+router.get('/contact', async (req, res) => {
+  try {
+    const page = await BookPost.findBySlug('contact');
+    if (!page) {
+      return res.render('contact', { title: 'Can I Email Her?', page: null });
+    }
+    res.render('page', { title: page.title, page });
+  } catch (error) {
+    console.error('Error fetching contact page:', error);
+    res.status(500).send('Error loading page');
+  }
 });
 
 // Reading page
-router.get('/reading', (req, res) => {
-  res.render('reading', { title: "What Else Is She Reading?" });
+router.get('/reading', async (req, res) => {
+  try {
+    const page = await BookPost.findBySlug('reading');
+    if (!page) {
+      return res.render('reading', { title: "What Else Is She Reading?", page: null });
+    }
+    res.render('page', { title: page.title, page });
+  } catch (error) {
+    console.error('Error fetching reading page:', error);
+    res.status(500).send('Error loading page');
+  }
 });
 
 module.exports = router;

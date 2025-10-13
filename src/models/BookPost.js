@@ -3,16 +3,16 @@ const logger = require('../utils/logger');
 
 class BookPost {
   // Create a new book post
-  static async create({ title, subtitle, slug, content, image_url, published_date }) {
+  static async create({ title, subtitle, slug, content, image_url, published_date, type = 'book' }) {
     try {
       const query = db.usePostgres
-        ? `INSERT INTO book_posts (title, subtitle, slug, content, image_url, published_date)
-           VALUES ($1, $2, $3, $4, $5, $6)
+        ? `INSERT INTO book_posts (title, subtitle, slug, content, image_url, published_date, type)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)
            RETURNING *`
-        : `INSERT INTO book_posts (title, subtitle, slug, content, image_url, published_date)
-           VALUES (?, ?, ?, ?, ?, ?)`;
+        : `INSERT INTO book_posts (title, subtitle, slug, content, image_url, published_date, type)
+           VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-      const result = await db.query(query, [title, subtitle, slug, content, image_url, published_date]);
+      const result = await db.query(query, [title, subtitle, slug, content, image_url, published_date, type]);
 
       if (db.usePostgres) {
         return result.rows[0];
@@ -71,20 +71,20 @@ class BookPost {
   }
 
   // Update a book post
-  static async update(id, { title, subtitle, slug, content, image_url, published_date }) {
+  static async update(id, { title, subtitle, slug, content, image_url, published_date, type = 'book' }) {
     try {
       const query = db.usePostgres
         ? `UPDATE book_posts
            SET title = $1, subtitle = $2, slug = $3, content = $4, image_url = $5,
-               published_date = $6, updated_at = CURRENT_TIMESTAMP
-           WHERE id = $7
+               published_date = $6, type = $7, updated_at = CURRENT_TIMESTAMP
+           WHERE id = $8
            RETURNING *`
         : `UPDATE book_posts
            SET title = ?, subtitle = ?, slug = ?, content = ?, image_url = ?,
-               published_date = ?, updated_at = CURRENT_TIMESTAMP
+               published_date = ?, type = ?, updated_at = CURRENT_TIMESTAMP
            WHERE id = ?`;
 
-      const result = await db.query(query, [title, subtitle, slug, content, image_url, published_date, id]);
+      const result = await db.query(query, [title, subtitle, slug, content, image_url, published_date, type, id]);
 
       if (db.usePostgres) {
         return result.rows[0];

@@ -40,10 +40,83 @@ const createBookPostsTable = async () => {
   }
 };
 
+// Add type column to book_posts table
+const addTypeColumn = async () => {
+  try {
+    // Check if column already exists
+    const checkColumnSQL = db.usePostgres
+      ? `SELECT column_name FROM information_schema.columns
+         WHERE table_name='book_posts' AND column_name='type'`
+      : `PRAGMA table_info(book_posts)`;
+
+    const result = await db.query(checkColumnSQL);
+
+    let columnExists = false;
+    if (db.usePostgres) {
+      columnExists = result.rows.length > 0;
+    } else {
+      columnExists = result.rows.some(col => col.name === 'type');
+    }
+
+    if (!columnExists) {
+      const addColumnSQL = db.usePostgres
+        ? `ALTER TABLE book_posts ADD COLUMN type VARCHAR(50) DEFAULT 'book' NOT NULL`
+        : `ALTER TABLE book_posts ADD COLUMN type TEXT DEFAULT 'book' NOT NULL`;
+
+      await db.query(addColumnSQL);
+      logger.info('Added type column to book_posts table');
+    } else {
+      logger.info('type column already exists in book_posts table');
+    }
+  } catch (error) {
+    logger.error('Error adding type column:', error);
+    throw error;
+  }
+};
+
+// Seed initial pages
+const seedPages = async () => {
+  try {
+    const pages = [
+      { slug: 'about', title: "Who's Writing This?", type: 'page' },
+      { slug: 'contact', title: 'Can I Email Her?', type: 'page' },
+      { slug: 'reading', title: "What Else Is She Reading?", type: 'page' }
+    ];
+
+    for (const page of pages) {
+      // Check if page already exists
+      const checkSQL = db.usePostgres
+        ? `SELECT id FROM book_posts WHERE slug = $1`
+        : `SELECT id FROM book_posts WHERE slug = ?`;
+
+      const result = await db.query(checkSQL, [page.slug]);
+
+      if (result.rows.length === 0) {
+        // Insert page
+        const insertSQL = db.usePostgres
+          ? `INSERT INTO book_posts (title, slug, type, published_date, content)
+             VALUES ($1, $2, $3, CURRENT_DATE, $4)`
+          : `INSERT INTO book_posts (title, slug, type, published_date, content)
+             VALUES (?, ?, ?, date('now'), ?)`;
+
+        await db.query(insertSQL, [page.title, page.slug, page.type, 'Content coming soon...']);
+        logger.info(`Seeded page: ${page.title}`);
+      } else {
+        logger.info(`Page already exists: ${page.title}`);
+      }
+    }
+  } catch (error) {
+    logger.error('Error seeding pages:', error);
+    throw error;
+  }
+};
+
 const runMigrations = async () => {
   logger.info('Running database migrations...');
   try {
     await createBookPostsTable();
+    await addTypeColumn();
+    await seedPages();
     logger.info('Migrations completed successfully');
   } catch (error) {
     logger.error('Migration failed:', error);
