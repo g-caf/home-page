@@ -27,21 +27,22 @@ body {
 
 .header-logo {
     position: absolute;
-    top: 10px;
+    top: 50%;
     right: 20px;
     width: 150px;
     height: 150px;
     object-fit: contain;
+    transform: translateY(-50%);
     transform-origin: center center;
     animation: slowSpin 20s linear infinite;
 }
 
 @keyframes slowSpin {
     0% {
-        transform: rotate(0deg);
+        transform: translateY(-50%) rotate(0deg);
     }
     100% {
-        transform: rotate(360deg);
+        transform: translateY(-50%) rotate(360deg);
     }
 }
 
