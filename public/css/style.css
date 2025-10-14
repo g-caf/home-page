@@ -25,24 +25,29 @@ body {
     justify-content: center;
 }
 
-.header-logo {
+.header-logo-link {
     position: absolute;
     top: 50%;
     right: 20px;
+    transform: translateY(-50%);
+    display: block;
+}
+
+.header-logo {
     width: 150px;
     height: 150px;
     object-fit: contain;
-    transform: translateY(-50%);
     transform-origin: center center;
     animation: slowSpin 20s linear infinite;
+    display: block;
 }
 
 @keyframes slowSpin {
     0% {
-        transform: translateY(-50%) rotate(0deg);
+        transform: rotate(0deg);
     }
     100% {
-        transform: translateY(-50%) rotate(360deg);
+        transform: rotate(360deg);
     }
 }
 

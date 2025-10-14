@@ -236,4 +236,24 @@ router.get('/reading', async (req, res) => {
   }
 });
 
+// Code page
+router.get('/code', async (req, res) => {
+  try {
+    const page = await BookPost.findBySlug('code');
+    if (!page) {
+      return res.status(404).send('Page not found - please create it in the admin dashboard');
+    }
+
+    // Render markdown content to HTML
+    if (page.content) {
+      page.contentHtml = md.render(page.content);
+    }
+
+    res.render('page', { title: page.title, page });
+  } catch (error) {
+    console.error('Error fetching code page:', error);
+    res.status(500).send('Error loading page');
+  }
+});
+
 module.exports = router;
