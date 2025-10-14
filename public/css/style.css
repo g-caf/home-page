@@ -19,6 +19,29 @@ body {
     text-align: center;
 }
 
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.header-logo {
+    width: 50px;
+    height: 50px;
+    transform-origin: center center;
+    animation: slowSpin 20s linear infinite;
+}
+
+@keyframes slowSpin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .site-title {
     margin: 0;
 }
