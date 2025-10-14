@@ -81,7 +81,14 @@ router.get('/:id(\\d+)/edit', async (req, res) => {
 router.post('/:id(\\d+)', upload.single('image'), async (req, res) => {
   try {
     const { title, subtitle, published_date, content, type } = req.body;
-    console.log('Update request body:', { title, subtitle, published_date, contentLength: content ? content.length : 0, type });
+    console.log('=== UPDATE REQUEST DEBUG ===');
+    console.log('Post ID:', req.params.id);
+    console.log('Title:', title);
+    console.log('Subtitle:', subtitle);
+    console.log('Published Date:', published_date);
+    console.log('Type:', type);
+    console.log('Content received:', content ? `Yes (${content.length} chars)` : 'No');
+    console.log('Content preview:', content ? content.substring(0, 100) : 'null');
 
     const bookPost = await BookPost.findById(req.params.id);
 
@@ -89,8 +96,10 @@ router.post('/:id(\\d+)', upload.single('image'), async (req, res) => {
       return res.status(404).send('Book post not found');
     }
 
-    // Generate new slug if title changed
-    const slug = BookPost.generateSlug(title);
+    console.log('Current content in DB:', bookPost.content ? `${bookPost.content.length} chars` : 'null');
+
+    // Generate new slug only if title changed
+    const slug = title !== bookPost.title ? BookPost.generateSlug(title) : bookPost.slug;
 
     // Handle image upload
     let image_url = bookPost.image_url;
@@ -116,7 +125,7 @@ router.post('/:id(\\d+)', upload.single('image'), async (req, res) => {
       fs.unlinkSync(req.file.path);
     }
 
-    await BookPost.update(req.params.id, {
+    const updateData = {
       title,
       subtitle: subtitle || null,
       slug,
@@ -124,7 +133,17 @@ router.post('/:id(\\d+)', upload.single('image'), async (req, res) => {
       image_url,
       published_date,
       type: type || bookPost.type || 'book'
+    };
+
+    console.log('Updating with data:', {
+      ...updateData,
+      content: updateData.content ? `${updateData.content.length} chars` : 'null'
     });
+
+    await BookPost.update(req.params.id, updateData);
+
+    console.log('Update completed successfully');
+    console.log('=== END UPDATE DEBUG ===');
 
     res.redirect('/admin');
   } catch (error) {
