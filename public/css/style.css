@@ -142,13 +142,14 @@ body {
 }
 
 .article-card.no-image {
-    background-color: #f5f5f5;
+    background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 50%, #e8e8e8 100%);
     display: flex;
     align-items: center;
     justify-content: flex-start;
     text-align: left;
     padding: 20px;
     box-sizing: border-box;
+    position: relative;
 }
 
 .article-link {
@@ -248,6 +249,27 @@ body {
 
 .article-card.no-image .publish-date {
     color: #999;
+}
+
+.no-image-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.favicon-icon {
+    width: 64px;
+    height: 64px;
+    opacity: 0.15;
+    filter: grayscale(100%) brightness(1.2);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
 }
 
 .spinning-emoji-container {
@@ -734,4 +756,4 @@ body {
 .book-post-body a:hover {
     color: #004499;
 }
-/* Cache bust: 1761185200 */
+/* Cache bust: 1762051200 */
