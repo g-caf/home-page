@@ -47,16 +47,12 @@ const addTypeColumn = async () => {
     const checkColumnSQL = db.usePostgres
       ? `SELECT column_name FROM information_schema.columns
          WHERE table_name='book_posts' AND column_name='type'`
-      : `PRAGMA table_info(book_posts)`;
+      : `SELECT name FROM pragma_table_info('book_posts') WHERE name='type'`;
 
     const result = await db.query(checkColumnSQL);
 
     let columnExists = false;
-    if (db.usePostgres) {
-      columnExists = result.rows.length > 0;
-    } else {
-      columnExists = result.rows.some(col => col.name === 'type');
-    }
+    columnExists = result.rows.length > 0;
 
     if (!columnExists) {
       const addColumnSQL = db.usePostgres
@@ -111,12 +107,48 @@ const seedPages = async () => {
   }
 };
 
+// SQL for creating writing_submissions table (works for both SQLite and PostgreSQL)
+const createWritingSubmissionsTable = async () => {
+  const createTableSQL = db.usePostgres
+    ? `
+      CREATE TABLE IF NOT EXISTS writing_submissions (
+        id SERIAL PRIMARY KEY,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        email VARCHAR(320) NOT NULL,
+        source_ip VARCHAR(64),
+        user_agent TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `
+    : `
+      CREATE TABLE IF NOT EXISTS writing_submissions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        source_ip TEXT,
+        user_agent TEXT,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
+  try {
+    await db.query(createTableSQL);
+    logger.info('writing_submissions table created or already exists');
+  } catch (error) {
+    logger.error('Error creating writing_submissions table:', error);
+    throw error;
+  }
+};
+
 const runMigrations = async () => {
   logger.info('Running database migrations...');
   try {
     await createBookPostsTable();
     await addTypeColumn();
     await seedPages();
+    await createWritingSubmissionsTable();
     logger.info('Migrations completed successfully');
   } catch (error) {
     logger.error('Migration failed:', error);

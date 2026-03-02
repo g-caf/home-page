@@ -128,6 +128,15 @@ LOG_LEVEL=info
 - `POST /api/admin/cleanup` - Run data cleanup (authenticated)
 - `GET /api/admin/health` - Health check endpoint
 
+### Writing Gate Submissions Admin
+- `GET /admin/writing-submissions` - JSON list of recent submissions (Basic Auth)
+- `GET /admin/writing-submissions.csv` - CSV download (Basic Auth)
+
+Controls:
+- Disabled unless `ADMIN_USERNAME` and `ADMIN_PASSWORD` are set
+- Optional IP allowlist using `ADMIN_ALLOWED_IPS`
+- Brute-force throttling after repeated failed auth attempts
+
 ## Database Schema
 
 ### Publications
