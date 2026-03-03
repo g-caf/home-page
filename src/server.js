@@ -13,8 +13,6 @@ const logger = require('./utils/logger');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.set('trust proxy', 1);
-
 // Configure EJS template engine
 app.set('views', path.join(__dirname, '..', 'views'));
 app.set('view engine', 'ejs');
