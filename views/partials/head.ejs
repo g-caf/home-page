@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Personal website with RSS and book blog feeds.">
+    <% const metaDescription = (typeof description === 'string' && description.trim())
+        ? description
+        : 'Personal website with RSS and book blog feeds.'; %>
+    <meta name="description" content="<%= metaDescription %>">
     <title><%= title %></title>
     <link rel="icon" type="image/png" href="/tn (1).png">
     <link rel="stylesheet" href="/css/style.css">

@@ -22,6 +22,12 @@
                     <%- page.contentHtml %>
                 </div>
             <% } %>
+
+            <% if (page.slug === 'code' || page.slug === 'developing') { %>
+                <div class="book-post-body">
+                    <%- include('partials/pdf-editor-embed', { showFullPageLink: true }) %>
+                </div>
+            <% } %>
         </article>
     </main>
 

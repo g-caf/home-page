@@ -1,0 +1,19 @@
+<section class="tool-embed" aria-label="PDF editor">
+    <div class="tool-embed__header">
+        <h2 class="tool-embed__title">PDF Editor</h2>
+        <p class="tool-embed__subtitle">Upload a PDF, reorder or delete pages, add text, signatures, and form fields, then export the finished file.</p>
+        <% if (showFullPageLink) { %>
+            <a class="tool-embed__link" href="/pdf-editor">Open the full editor page</a>
+        <% } %>
+    </div>
+
+    <div class="tool-embed__frame" role="region" aria-label="Embedded PDF editor">
+        <iframe
+            src="/pdf-tool/"
+            title="PDF editor"
+            loading="lazy"
+            allow="clipboard-read; clipboard-write"
+            referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+    </div>
+</section>

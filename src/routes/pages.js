@@ -236,6 +236,25 @@ router.get('/reading', async (req, res) => {
   }
 });
 
+// Developing page
+router.get('/developing', async (req, res) => {
+  try {
+    const page = await BookPost.findBySlug('developing');
+    if (!page) {
+      return res.status(404).send('Page not found - please create it in the admin dashboard');
+    }
+
+    if (page.content) {
+      page.contentHtml = md.render(page.content);
+    }
+
+    res.render('page', { title: page.title, page });
+  } catch (error) {
+    console.error('Error fetching developing page:', error);
+    res.status(500).send('Error loading page');
+  }
+});
+
 // Code page
 router.get('/code', async (req, res) => {
   try {
@@ -254,6 +273,14 @@ router.get('/code', async (req, res) => {
     console.error('Error fetching code page:', error);
     res.status(500).send('Error loading page');
   }
+});
+
+// PDF editor page
+router.get('/pdf-editor', (req, res) => {
+  res.render('pdf-editor', {
+    title: 'PDF Editor',
+    description: 'Free online PDF editor for rearranging, deleting, and exporting pages right in your browser.'
+  });
 });
 
 module.exports = router;

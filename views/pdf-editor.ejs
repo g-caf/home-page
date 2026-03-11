@@ -1,0 +1,29 @@
+<%- include('partials/head', { title: 'PDF Editor', description: 'Free online PDF editor for rearranging, deleting, and exporting pages right in your browser.' }) %>
+<body class="book-post-page pdf-editor-shell">
+    <%- include('partials/header') %>
+
+    <main class="book-post-content">
+        <article class="book-post-article pdf-editor-page">
+            <div class="book-post-header">
+                <h1 class="book-post-title">PDF Editor</h1>
+                <h2 class="book-post-subtitle">A browser-based tool for editing PDFs without leaving this site.</h2>
+            </div>
+
+            <div class="book-post-body pdf-editor-page__intro">
+                <p>This PDF editor lets you upload a document, reorder pages, remove pages you do not need, place text, add signatures, and export the updated file directly from your browser. It is built into this site so the same tool is available here as a standalone page and inside the <a href="/developing">Developing</a> page.</p>
+                <p>If you are searching for a free online PDF page organizer, lightweight PDF markup tool, or a simple way to add signatures and fill fields in a PDF, this page is the dedicated entry point.</p>
+            </div>
+
+            <div class="book-post-body pdf-editor-page__details">
+                <p><strong>What it does:</strong> merge PDFs, reorder pages, delete sections, add text overlays, place signatures, detect likely form fields, and download the edited file.</p>
+                <p><strong>Best for:</strong> cleaning up applications, combining supporting documents, preparing forms, and making quick edits without switching to heavier desktop software.</p>
+            </div>
+
+            <div class="book-post-body">
+                <%- include('partials/pdf-editor-embed', { showFullPageLink: false }) %>
+            </div>
+        </article>
+    </main>
+
+    <%- include('partials/footer') %>
+</body>
